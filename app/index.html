@@ -1,13 +1,68 @@
 <!doctype html>
 <html>
 <head>
-  <meta charset="utf-8">
-    <title>diceware</title>
+    <meta charset="utf-8">
+    <title>Diceware Password Generator</title>
     <link href="components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/main.css" rel="stylesheet">
 </head>
 <body>
-  <div id="app" style="height: inherit"></div>
-  <script src="js/p/app.js"></script>
+<div id="app" style="height: inherit"></div>
+<section class="container">
+    <header>
+        <h1>Password Generator</h1>
+    </header>
+    <section class="row">
+        <section id="options" class="col-4">
+            <h2>Options</h2>
+            <form>
+                <div>
+                    <input type="radio" name="generator" id="passphrase" value="passphrase" />
+                    <label for="passphrase">Passphrase</label>
+                </div>
+                <div>
+                    <input type="radio" name="generator" id="password-xp" value="password-xp" />
+                    <label for="password-xp">Password (XP)</label>
+                </div>
+                <div>
+                    <input type="radio" name="generator" id="password-win7" value="password-win7" />
+                    <label for="password-win7">Password (Windows 7)</label>
+                </div>
+                <div>
+                    <input type="radio" name="generator" id="pin" value="pin" />
+                    <label for="pin">PIN (5 digits)</label>
+                </div>
+                <div class="how-many vertical-isolation">
+                    <label for="count">How many?</label>
+                    <input type="number" name="count" id="count" value="count" min="1" max="13"/>
+                </div>
+                <input type="submit" class="span-width vertical-isolation" value="Go!" id="go"/>
+            </form>
+        </section>
+        <section class="col-8">
+            <section class="generated">
+                <h2>Generated</h2>
+                <ul>
+                    <li>To be or not to</li>
+                    <li>Four4Score+And</li>
+                    <li>We|hold=these2truths>to-be</li>
+                    <li>Wherefore@art%thou7Romeo,*A</li>
+                    <li>93584 (We5The)</li>
+                </ul>
+            </section>
+            <section class="practice">
+                <h2>Practice</h2>
+                <textarea rows="5" cols="55" >
+                    We the people of the United States
+                    Of America, in order to form a
+                    more perfect union, provide for
+                    the common defense, ensure domestic
+                    tranquility, provide for the general
+                </textarea>
+            </section>
+        </section>
+    </section>
+</section>
+<script src="js/p/app.js"></script>
 </body>
 </html>

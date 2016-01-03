@@ -2,6 +2,8 @@
   (:require [reagent.core :as reagent]
             [cljsjs.react]))
 
+(enable-console-print!)
+
 (def generators-view {:passphrase {:name "Passphrase"}
                       :password-xp {:name "Password (XP)"}
                       :password-win7 {:name "Password (Windows 7)"}
@@ -16,8 +18,6 @@
                :to-be {:generator :passphrase
                        :count 5}}
      :results {:candidates []}}))
-
-(enable-console-print!)
 
 (defn get-how-many [which]
   (get-in @app-state [:options which :count]))
@@ -36,7 +36,7 @@
     [:label {:for "count" :class "text-label"} "How Many?"]
     [:input {:type      "number" :name "count" :id "count" :value (get-how-many :to-be) :min 1 :max 17
              :on-change (fn [e] (swap! app-state update-in [:options :to-be :count]
-                                       (fn [_] (-> e .-target .-value))))}]])
+                                       (fn [_] (-> e .-target .-value js/parseInt))))}]])
 
 (defn options []
   [:section {:id "options" :class-name "col-4"}

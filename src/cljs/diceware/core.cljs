@@ -4,25 +4,22 @@
 
 (def app-state
   (reagent/atom
-    {:options {:count 5}
+    {:options {:as-is {:count 5}                            ; The "as-is" and "to-be" values begin
+               :to-be {:count 5}}                           ; as **copies** of each other (not shared).
      :results {:candidates []}}))
 
 (enable-console-print!)
 
-(defn get-how-many []
-  (get-in @app-state [:options :count]))
+(defn get-how-many [which]
+  (get-in @app-state [:options which :count]))
 
 (defn view-generators [])
 
 (defn view-how-many []
   [:div {:class-name "how-many vertical-isolation"}
     [:label {:for "count"} "How Many?"]
-    [:input {:type      "number" :name "count" :id "count" :value (get-how-many) :min 1 :max 17
-             :on-change (fn [e] (swap! app-state update-in [:options :count] (fn [_] (-> e .-target .-value)))
-                          #_(do
-                              (println e)
-                              (println (-> e .-target))
-                              (println (-> e .-target .-value))))}]])
+    [:input {:type      "number" :name "count" :id "count" :value (get-how-many :to-be) :min 1 :max 17
+             :on-change (fn [e] (swap! app-state update-in [:options :to-be :count] (fn [_] (-> e .-target .-value))))}]])
 
 (defn options []
   [:section {:id "options" :class-name "col-4"}
@@ -37,7 +34,7 @@
    (let [candidate-passwords (get-in @app-state [:results :candidates])]
      (if (not (empty? candidate-passwords))
        (map #([:li %]) candidate-passwords)
-       (map-indexed (fn [i _] ^{:key i} [:li]) (range (get-how-many)))))])
+       (map-indexed (fn [i _] ^{:key i} [:li]) (range (get-how-many :as-is)))))])
 
 (defn results []
   [:section {:id "results" :class-name "col-8"}
@@ -46,7 +43,7 @@
     (view-candidate-passwords)]
    [:section {:class-name "practice"}
     [:h2 "Practice"]
-    [:textarea {:rows (get-how-many)
+    [:textarea {:rows (get-how-many :as-is)
                 :cols 55}]]])
 
 (defn main-page

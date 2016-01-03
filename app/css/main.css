@@ -65,6 +65,14 @@
     width: 100%;
 }
 
+.radio-label {
+    margin-left: 5px;
+}
+
+.text-label {
+    margin-right: 5px;
+}
+
 #options {
     padding-left: 3px;
     padding-right: 3px;

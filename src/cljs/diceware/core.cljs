@@ -2,10 +2,19 @@
   (:require [reagent.core :as reagent]
             [cljsjs.react]))
 
+(def generators-view {:passphrase {:name "Passphrase"}
+                      :password-xp {:name "Password (XP)"}
+                      :password-win7 {:name "Password (Windows 7)"}
+                      :password {:name "Password"}
+                      :pin {:name "PIN (5-digit)"}})
+
 (def app-state
   (reagent/atom
-    {:options {:as-is {:count 5}                            ; The "as-is" and "to-be" values begin
-               :to-be {:count 5}}                           ; as **copies** of each other (not shared).
+    ;; The "as-is" and "to-be" values begin as **copies** of each other (not shared).
+    {:options {:as-is {:generator :passphrase
+                       :count 5}
+               :to-be {:generator :passphrase
+                       :count 5}}
      :results {:candidates []}}))
 
 (enable-console-print!)
@@ -13,13 +22,21 @@
 (defn get-how-many [which]
   (get-in @app-state [:options which :count]))
 
-(defn view-generators [])
+(defn view-generator-selector [generator-id]
+  (let [generator-id-text (name generator-id)]
+    [:div
+     [:input {:type "radio" :name generator-id-text :id generator-id-text :value generator-id-text}]
+     [:label {:for generator-id-text :class "radio-label"} (get-in generators-view [generator-id :name])]]))
+
+(defn view-generators []
+  (map #(with-meta (view-generator-selector %) {:key %}) (keys generators-view)))
 
 (defn view-how-many []
   [:div {:class-name "how-many vertical-isolation"}
-    [:label {:for "count"} "How Many?"]
+    [:label {:for "count" :class "text-label"} "How Many?"]
     [:input {:type      "number" :name "count" :id "count" :value (get-how-many :to-be) :min 1 :max 17
-             :on-change (fn [e] (swap! app-state update-in [:options :to-be :count] (fn [_] (-> e .-target .-value))))}]])
+             :on-change (fn [e] (swap! app-state update-in [:options :to-be :count]
+                                       (fn [_] (-> e .-target .-value))))}]])
 
 (defn options []
   [:section {:id "options" :class-name "col-4"}

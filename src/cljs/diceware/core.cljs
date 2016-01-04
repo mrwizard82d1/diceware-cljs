@@ -1,8 +1,16 @@
 (ns diceware.core
   (:require [reagent.core :as reagent]
-            [cljsjs.react]))
+            [cljsjs.react])
+  (:use [clojure.string :only [split-lines]]))
 
 (enable-console-print!)
+
+;; Require the node filesystem module to read the diceware word file.
+(def fs (js/require "fs"))
+
+(defn read-diceware-words-file []
+  (let [text (.readFileSync fs "./app/diceware8k.txt" {:encoding "utf-8"})]
+    (clojure.string/split-lines text)))
 
 (def generators-view {:passphrase {:name "Passphrase"}
                       :password-xp {:name "Password (XP)"}
@@ -49,9 +57,13 @@
     (view-how-many)
     [:input {:type "submit" :class-name "span-width vertical-isolation" :value "Go!" :id "go"
              :on-click
-             (fn [ev]
-               (.preventDefault ev)
-               (copy-options-to-be->as-is!))}]]])
+                   (fn [ev]
+                     (.preventDefault ev)
+                     (copy-options-to-be->as-is!)
+                     (let [source-words (read-diceware-words-file)]
+                       (println (nth source-words 0))
+                       #_(swap! app-state update-in [:results :candidates]
+                              (fn [_old] (vec (take (get-how-many :as-is) source-words))))))}]]])
 
 (defn view-candidate-passwords []
   [:ul

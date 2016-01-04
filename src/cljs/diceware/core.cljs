@@ -22,6 +22,9 @@
 (defn get-how-many [which]
   (get-in @app-state [:options which :count]))
 
+(defn copy-options-to-be->as-is! []
+ (swap! app-state update-in [:options :as-is] merge (get-in @app-state [:options :to-be])))
+
 (defn view-generator-selector [generator-id]
   (let [generator-id-text (name generator-id)]
     [:div
@@ -44,7 +47,11 @@
    [:form
     (view-generators)
     (view-how-many)
-    [:input {:type "submit" :class-name "span-width vertical-isolation" :value "Go!" :id "go"}]]])
+    [:input {:type "submit" :class-name "span-width vertical-isolation" :value "Go!" :id "go"
+             :on-click
+             (fn [ev]
+               (.preventDefault ev)
+               (copy-options-to-be->as-is!))}]]])
 
 (defn view-candidate-passwords []
   [:ul

@@ -62,14 +62,15 @@
                      (copy-options-to-be->as-is!)
                      (let [source-words (read-diceware-words-file)]
                        (println (nth source-words 0))
-                       #_(swap! app-state update-in [:results :candidates]
-                              (fn [_old] (vec (take (get-how-many :as-is) source-words))))))}]]])
+                       (swap! app-state update-in [:results :candidates]
+                              (fn [_old] (vec (repeatedly (get-how-many :as-is)
+                                                          (fn [] (rand-nth source-words))))))))}]]])
 
 (defn view-candidate-passwords []
   [:ul
    (let [candidate-passwords (get-in @app-state [:results :candidates])]
      (if (not (empty? candidate-passwords))
-       (map #([:li %]) candidate-passwords)
+       (map #(vector :li %) candidate-passwords)
        (map-indexed (fn [i _] ^{:key i} [:li]) (range (get-how-many :as-is)))))])
 
 (defn results []

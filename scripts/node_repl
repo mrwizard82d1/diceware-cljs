@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ "$(uname)" == "Darwin" ]; then
+    # Do something under Mac OS X platform
+    rlwrap lein trampoline run -m clojure.main scripts/node_repl.clj
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+    # Do something under Linux platform
+    rlwrap lein trampoline run -m clojure.main scripts/node_repl.clj
+elif [ "$(expr substr $(uname -s) 1 9)" == "CYGWIN_NT" ]; then
+    # Do something under Cygwin platform
+    ~/.lein/bin/lein.bat run -m clojure.main scripts/node_repl.clj
+elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
+    # Do something under Windows NT platform
+    # I need to install rlwrap on Windows - but not for now.
+
+    cmd //c /c/cygwin64/home/ljones/.lein/bin/lein.bat trampoline run -m clojure.main scripts/node_repl.clj
+fi

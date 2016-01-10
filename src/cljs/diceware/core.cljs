@@ -1,6 +1,7 @@
 (ns diceware.core
   (:require [reagent.core :as reagent]
-            [cljsjs.react])
+            [cljsjs.react]
+            [diceware.generators :as dg])
   (:use [clojure.string :only [split-lines]]))
 
 (enable-console-print!)
@@ -61,17 +62,19 @@
                      (.preventDefault ev)
                      (copy-options-to-be->as-is!)
                      (let [source-words (read-diceware-words-file)]
-                       (println (nth source-words 0))
                        (swap! app-state update-in [:results :candidates]
-                              (fn [_old] (vec (repeatedly (get-how-many :as-is)
-                                                          (fn [] (rand-nth source-words))))))))}]]])
+                              (fn [_old] (dg/generate (get-in @app-state [:options :as-is :generator])
+                                                      (get-how-many :as-is)
+                                                      source-words
+                                                      (partial rand-nth))))))}]]])
+
 
 (defn view-candidate-passwords []
   [:ul
    (let [candidate-passwords (get-in @app-state [:results :candidates])]
-     (if (not (empty? candidate-passwords))
-       (map #(vector :li %) candidate-passwords)
-       (map-indexed (fn [i _] ^{:key i} [:li]) (range (get-how-many :as-is)))))])
+    (if (not (empty? candidate-passwords))
+                    (map-indexed (fn [i pwd] ^{:key i} [:li pwd]) candidate-passwords)
+                    (map-indexed (fn [i _] ^{:key i} [:li]) (range (get-how-many :as-is)))))])
 
 (defn results []
   [:section {:id "results" :class-name "col-8"}

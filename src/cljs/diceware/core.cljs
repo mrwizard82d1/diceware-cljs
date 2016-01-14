@@ -22,9 +22,9 @@
 (def app-state
   (reagent/atom
     ;; The "as-is" and "to-be" values begin as **copies** of each other (not shared).
-    {:options {:as-is {:generator :passphrase
+    {:options {:as-is {:generator :password-xp
                        :count 5}
-               :to-be {:generator :passphrase
+               :to-be {:generator :password-xp
                        :count 5}}
      :results {:candidates []}}))
 

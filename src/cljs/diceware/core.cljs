@@ -14,7 +14,7 @@
     (clojure.string/split-lines text)))
 
 (def generators-view {:passphrase {:name "Passphrase"}
-                      :password-xp {:name "Password (XP)"}
+                      :password-outlook {:name "Password (Outlook)"}
                       :password-win7 {:name "Password (Windows 7)"}
                       :password {:name "Password"}
                       :pin {:name "PIN (5-digit)"}})
@@ -22,9 +22,9 @@
 (def app-state
   (reagent/atom
     ;; The "as-is" and "to-be" values begin as **copies** of each other (not shared).
-    {:options {:as-is {:generator :password-xp
+    {:options {:as-is {:generator :password-outlook
                        :count 5}
-               :to-be {:generator :password-xp
+               :to-be {:generator :password-outlook
                        :count 5}}
      :results {:candidates []}}))
 

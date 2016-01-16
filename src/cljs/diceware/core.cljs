@@ -15,16 +15,16 @@
 
 (def generators-view {:passphrase {:name "Passphrase"}
                       :password-outlook {:name "Password (Outlook)"}
-                      :password-win7 {:name "Password (Windows 7)"}
+                      :password-windows {:name "Password (Windows)"}
                       :password {:name "Password"}
                       :pin {:name "PIN (5-digit)"}})
 
 (def app-state
   (reagent/atom
     ;; The "as-is" and "to-be" values begin as **copies** of each other (not shared).
-    {:options {:as-is {:generator :password-outlook
+    {:options {:as-is {:generator :passphrase
                        :count 5}
-               :to-be {:generator :password-outlook
+               :to-be {:generator :passphrase
                        :count 5}}
      :results {:candidates []}}))
 

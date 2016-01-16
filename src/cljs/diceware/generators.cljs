@@ -24,3 +24,13 @@
   [_ count words selector]
   (repeatedly count (partial generate-outlook-password words selector)))
 
+(defn generate-windows-password [words selector]
+  (let [candidate (str/join "" (interleave (repeatedly 6 (partial selector words))
+                                           (repeatedly (partial rand-nth non-alpha-characters))))]
+    (if (> (count candidate) 32)
+      (.substring candidate 0 32)
+      candidate)))
+
+(defmethod generate :password-windows
+  [_ count words selector]
+  (repeatedly count (partial generate-windows-password words selector)))

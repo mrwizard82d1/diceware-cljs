@@ -43,3 +43,13 @@
 (defmethod generate :password
   [_ count words selector]
   (repeatedly count (partial generate-password words selector)))
+
+(defn generate-pin [words selector]
+  (let [candidate (str/join "" (interleave (repeatedly 2 (partial selector words))
+                                           (repeatedly #(rand-int 10))))]
+    candidate))
+
+(defmethod generate :pin
+  [_ count words selector]
+  (repeatedly count (partial generate-pin words selector)))
+

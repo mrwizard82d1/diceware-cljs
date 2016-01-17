@@ -59,3 +59,13 @@
                (t/is (= ["vetus" "mensae" "filia" "Europae" "bracteae"] pieces)))
              (t/is (= 3 (count (dg/generate :password 3 five-words sequential-selector))))))
 
+(t/deftest generate-pin
+           (t/is (= 0 (count (dg/generate :pin 0 ["a"] (fn [ws] (nth ws 0))))))
+           (let [sequential-selector (make-sequential-selector)
+                 pins (dg/generate :pin 1 five-words sequential-selector)]
+             (t/is (= 1 (count pins)))
+             (let [matches (vec (re-seq #"([A-Za-z]+)(\d)([A-Za-z]+)" (nth pins 0)))]
+               (t/is (= 1 (count matches)))
+               (t/is (= "vetus" (get-in matches [0 1])))    ;; first group
+               (t/is (= "mensae" (get-in matches [0 3]))))  ;; third group
+             (t/is (= 3 (count (dg/generate :pin 3 five-words sequential-selector))))))

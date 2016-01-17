@@ -64,8 +64,7 @@
            (let [sequential-selector (make-sequential-selector)
                  pins (dg/generate :pin 1 five-words sequential-selector)]
              (t/is (= 1 (count pins)))
-             (let [_ (print (nth pins 0))
-                   matches (vec (re-seq #"([A-Za-z]+)(\d)([A-Za-z]+)" (nth pins 0)))]
+             (let [matches (vec (re-seq #"([A-Za-z]+)(\d)([A-Za-z]+)" (nth pins 0)))]
                (t/is (= 1 (count matches)))
                (t/is (= "vetus" (get-in matches [0 1])))    ;; first group
                (t/is (= "mensae" (get-in matches [0 3]))))  ;; third group

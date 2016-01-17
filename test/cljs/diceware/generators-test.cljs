@@ -59,8 +59,7 @@
              (t/is (not (re-find #"[^A-Za-z]$" (nth passwords 0))))
              (let [pieces (str/split (nth passwords 0) #"[^A-Za-z]")]
                (t/is (= 5 (count pieces)))
-               ;; The expected order is "unexpected" because of an implementation detail of `dg/generate :password`.
-               (t/is (= ["mensae" "filia" "Europae" "bracteae" "vetus"] pieces)))
+               (t/is (= ["vetus" "mensae" "filia" "Europae" "bracteae"] pieces)))
              (t/is (= 3 (count (dg/generate :password 3 five-words sequential-selector))))))
 
 (t/deftest generate-pin

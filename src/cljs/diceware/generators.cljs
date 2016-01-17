@@ -1,5 +1,6 @@
 (ns diceware.generators
-  (:require [clojure.string :as str]))
+  (:require [clojure.string :as str]
+            [goog.string :as gs]))
 
 (defmulti generate (fn [kind _ _ _] kind))
 
@@ -74,3 +75,6 @@
     (str/join "" [(chars->pin-numbers first-word-prefix)
                   digit-separator
                   (chars->pin-numbers second-word-prefix)])))
+
+(defn is-pin-password? [candidate]
+  (not (empty? (re-find #"^[A-Za-z]{2}[A-Za-z]*\d[A-Za-z]{2}[A-Za-z]*" candidate))))

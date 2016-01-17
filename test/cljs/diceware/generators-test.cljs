@@ -84,4 +84,12 @@
            (t/is (nil? (dg/pin-password->numeric-pin "civitas9c")))
            (t/is (nil? (dg/pin-password->numeric-pin "solidus[quoque"))))
 
-
+(t/deftest is-pin-password?
+           (t/is (not (dg/is-pin-password? "")))
+           (t/is (dg/is-pin-password? "assideo2orior"))
+           (t/is (dg/is-pin-password? "Fulgeo7chordus"))
+           (t/is (dg/is-pin-password? "utilis1hErnia"))
+           (t/is (not (dg/is-pin-password? "8merx")))
+           (t/is (not (dg/is-pin-password? "n1nostri")))
+           (t/is (not (dg/is-pin-password? "molis4m")))
+           (t/is (not (dg/is-pin-password? "silentis>implacabilis"))))

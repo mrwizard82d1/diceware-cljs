@@ -73,3 +73,15 @@
                (t/is (= "vetus" (get-in matches [0 1])))    ;; first group
                (t/is (= "mensae" (get-in matches [0 3]))))  ;; third group
              (t/is (= 3 (count (dg/generate :pin 3 five-words sequential-selector))))))
+
+(t/deftest pin-password->pin-numeric
+           (t/is (nil? (dg/pin-password->numeric-pin "")))
+           (t/is (= "78373" (dg/pin-password->numeric-pin "strentes3sextus")))
+           (t/is (= "54168" (dg/pin-password->numeric-pin "lIquo1nugatorius")))
+           (t/is (= "22423" (dg/pin-password->numeric-pin "capsi4aFflatus")))
+           (t/is (nil? (dg/pin-password->numeric-pin "1Afer")))
+           (t/is (nil? (dg/pin-password->numeric-pin "a5agenda")))
+           (t/is (nil? (dg/pin-password->numeric-pin "civitas9c")))
+           (t/is (nil? (dg/pin-password->numeric-pin "solidus[quoque"))))
+
+

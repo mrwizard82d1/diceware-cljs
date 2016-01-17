@@ -84,13 +84,17 @@
                                                       source-words
                                                       (partial rand-nth))))))}]]])
 
-
 (defn view-candidate-passwords []
   [:ul
    (let [candidate-passwords (get-in @app-state [:results :candidates])]
     (if (not (empty? candidate-passwords))
-                    (map-indexed (fn [i pwd] ^{:key i} [:li pwd]) candidate-passwords)
-                    (map-indexed (fn [i _] ^{:key i} [:li]) (range (get-how-many :as-is)))))])
+      (doall
+        (map-indexed (fn [i pwd]
+                       ^{:key i} [:li (if (not (= :pin (get-in @app-state [:options :as-is :generator])))
+                                        pwd
+                                        (str (dg/pin-password->numeric-pin pwd) " (" pwd ")"))])
+                     candidate-passwords))
+      (map-indexed (fn [i _] ^{:key i} [:li]) (range (get-how-many :as-is)))))])
 
 (defn results []
   [:section {:id "results" :class-name "col-8"}

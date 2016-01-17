@@ -49,5 +49,13 @@
                (t/is (= ["vetus" "mensae" "filia" "Europae" "bract"] pieces)))
              (t/is (= 3 (count (dg/generate :password-windows 3 five-words sequential-selector))))))
 
-
+(t/deftest generate-password
+           (t/is (= 0 (count (dg/generate :password 0 ["a"] (fn [ws] (nth ws 0))))))
+           (let [sequential-selector (make-sequential-selector)
+                 passwords (dg/generate :password 1 five-words sequential-selector)]
+             (t/is (= 1 (count passwords)))
+             (let [pieces (str/split (nth passwords 0) #"[^A-Za-z]")]
+               (t/is (= 5 (count pieces)))
+               (t/is (= ["vetus" "mensae" "filia" "Europae" "bracteae"] pieces)))
+             (t/is (= 3 (count (dg/generate :password 3 five-words sequential-selector))))))
 

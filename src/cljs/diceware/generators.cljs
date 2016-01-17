@@ -34,3 +34,12 @@
 (defmethod generate :password-windows
   [_ count words selector]
   (repeatedly count (partial generate-windows-password words selector)))
+
+(defn generate-password [words selector]
+  (let [candidate (str/join "" (interleave (repeatedly 5 (partial selector words))
+                                           (repeatedly (partial rand-nth non-alpha-characters))))]
+    candidate))
+
+(defmethod generate :password
+  [_ count words selector]
+  (repeatedly count (partial generate-password words selector)))

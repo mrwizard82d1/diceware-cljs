@@ -36,8 +36,9 @@
   (repeatedly count (partial generate-windows-password words selector)))
 
 (defn generate-password [words selector]
-  (let [candidate (str/join "" (interleave (repeatedly 5 (partial selector words))
-                                           (repeatedly (partial rand-nth non-alpha-characters))))]
+  (let [candidate (str/join "" (concat (interleave (repeatedly 4 (partial selector words))
+                                                   (repeatedly (partial rand-nth non-alpha-characters)))
+                                       (selector words)))]
     candidate))
 
 (defmethod generate :password
@@ -45,8 +46,7 @@
   (repeatedly count (partial generate-password words selector)))
 
 (defn generate-pin [words selector]
-  (let [candidate (str/join "" (interleave (repeatedly 2 (partial selector words))
-                                           (repeatedly #(rand-int 10))))]
+  (let [candidate (str/join "" [(selector words) (rand-int 10) (selector words)])]
     candidate))
 
 (defmethod generate :pin

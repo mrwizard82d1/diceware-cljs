@@ -33,6 +33,7 @@
            (let [sequential-selector (make-sequential-selector)
                  passwords (dg/generate :password-outlook 1 five-words sequential-selector)]
              (t/is (= 1 (count passwords)))
+             (t/is (not (re-find #"[^A-Za-z]$" (nth passwords 0))))
              (let [pieces (str/split (nth passwords 0) #"[^A-Za-z]")]
                (t/is (= 3 (count pieces)))
                (t/is (= ["vetus" "mensae" "fil"] pieces)))
@@ -43,6 +44,7 @@
            (let [sequential-selector (make-sequential-selector)
                  passwords (dg/generate :password-windows 1 five-words sequential-selector)]
              (t/is (= 1 (count passwords)))
+             (t/is (not (re-find #"[^A-Za-z]$" (nth passwords 0))))
              (let [pieces (str/split (nth passwords 0) #"[^A-Za-z]")]
                (t/is (= 5 (count pieces)))
                ;; Because the maximum size of a windows password is 32 characters, I truncate the last piece.
@@ -54,9 +56,11 @@
            (let [sequential-selector (make-sequential-selector)
                  passwords (dg/generate :password 1 five-words sequential-selector)]
              (t/is (= 1 (count passwords)))
+             (t/is (not (re-find #"[^A-Za-z]$" (nth passwords 0))))
              (let [pieces (str/split (nth passwords 0) #"[^A-Za-z]")]
                (t/is (= 5 (count pieces)))
-               (t/is (= ["vetus" "mensae" "filia" "Europae" "bracteae"] pieces)))
+               ;; The expected order is "unexpected" because of an implementation detail of `dg/generate :password`.
+               (t/is (= ["mensae" "filia" "Europae" "bracteae" "vetus"] pieces)))
              (t/is (= 3 (count (dg/generate :password 3 five-words sequential-selector))))))
 
 (t/deftest generate-pin
@@ -64,7 +68,7 @@
            (let [sequential-selector (make-sequential-selector)
                  pins (dg/generate :pin 1 five-words sequential-selector)]
              (t/is (= 1 (count pins)))
-             (let [matches (vec (re-seq #"([A-Za-z]+)(\d)([A-Za-z]+)" (nth pins 0)))]
+             (let [matches (vec (re-seq #"^([A-Za-z]+)(\d)([A-Za-z]+)$" (nth pins 0)))]
                (t/is (= 1 (count matches)))
                (t/is (= "vetus" (get-in matches [0 1])))    ;; first group
                (t/is (= "mensae" (get-in matches [0 3]))))  ;; third group

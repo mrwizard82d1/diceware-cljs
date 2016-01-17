@@ -76,20 +76,24 @@
 
 (t/deftest pin-password->pin-numeric
            (t/is (nil? (dg/pin-password->numeric-pin "")))
-           (t/is (= "78373" (dg/pin-password->numeric-pin "strentes3sextus")))
-           (t/is (= "54168" (dg/pin-password->numeric-pin "lIquo1nugatorius")))
-           (t/is (= "22423" (dg/pin-password->numeric-pin "capsi4aFflatus")))
-           (t/is (nil? (dg/pin-password->numeric-pin "1Afer")))
-           (t/is (nil? (dg/pin-password->numeric-pin "a5agenda")))
-           (t/is (nil? (dg/pin-password->numeric-pin "civitas9c")))
-           (t/is (nil? (dg/pin-password->numeric-pin "solidus[quoque"))))
+           (t/are [x y] (= x (dg/pin-password->numeric-pin y))
+                  "78373" "strentes3sextus"
+                  "54168" "lIquo1nugatorius"
+                  "22423" "capsi4aFflatus")
+           (t/are [c] (nil? (dg/pin-password->numeric-pin c))
+                  "1Afer"
+                  "a5agenda"
+                  "civitas9c"
+                  "solidus[quoque"))
 
 (t/deftest is-pin-password?
            (t/is (not (dg/is-pin-password? "")))
-           (t/is (dg/is-pin-password? "assideo2orior"))
-           (t/is (dg/is-pin-password? "Fulgeo7chordus"))
-           (t/is (dg/is-pin-password? "utilis1hErnia"))
-           (t/is (not (dg/is-pin-password? "8merx")))
-           (t/is (not (dg/is-pin-password? "n1nostri")))
-           (t/is (not (dg/is-pin-password? "molis4m")))
-           (t/is (not (dg/is-pin-password? "silentis>implacabilis"))))
+           (t/are [c] (dg/is-pin-password? c)
+                  "assideo2orior"
+                  "Fulgeo7chordus"
+                  "utilis1hErnia")
+           (t/are [c] (not (dg/is-pin-password? c))
+                  "8merx"
+                  "n1nostri"
+                  "molis4m"
+                  "silentis>implacabilis"))

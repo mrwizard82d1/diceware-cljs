@@ -64,7 +64,8 @@
   (parse-pin-password candidate))
 
 (defn generate-pin [words selector]
-  (let [candidates (repeatedly #(str/join "" [(selector words) (first (random-digits)) (selector words)]))]
+  (let [candidates (filter is-pin-password?
+                           (repeatedly #(str/join "" [(selector words) (first (random-digits)) (selector words)])))]
     (first candidates)))
 
 (defmethod generate :pin

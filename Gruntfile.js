@@ -218,7 +218,24 @@ function deleteExtraResources(paths) {
 // Tasks
 //------------------------------------------------------------------------------
 
-grunt.registerTask('release', ['cljsbuild-prod', 'prepare-release', 'release-linux', 'release-mac', 'release-win']);
+// When running the 'release-mac' tasks, an error occurs:
+//
+// Running "release-mac" task
+// Getting project metadata...
+// Packaging app for platform darwin x64 using electron v0.35.2
+// Fatal error: Task "appdmg" not found.
+//
+// When I originally installed all the dependencies for the electron-template (using ./scripts/setup.sh), I observed
+// the following warning:
+//
+// Loading "appdmg.js" tasks...ERROR
+// >> Error: Module version mismatch. Expected 47, got 46.
+//
+// The issue posted to the electron-template GitHub site seems to refer to the same issue; however, it recommends
+// using NVM to install io.js v2.3.1 to address the issue.
+//
+// grunt.registerTask('release', ['cljsbuild-prod', 'prepare-release', 'release-linux', 'release-mac', 'release-win']);
+grunt.registerTask('release', ['cljsbuild-prod', 'prepare-release', 'release-linux', 'release-win']);
 
 grunt.registerTask('cljsbuild-prod', function() {
   grunt.log.writeln("\nCleaning and building ClojureScript production files...");

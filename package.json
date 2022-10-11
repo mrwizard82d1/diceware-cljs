@@ -11,7 +11,7 @@
     "moment": "2.29.2",
     "shelljs": "0.8.5",
     "winresourcer": "0.9.0",
-    "electron-packager": "5.1.0"
+    "electron-packager": "16.0.0"
   },
   "optionalDependencies": {
     "grunt-appdmg": "0.3.2"
